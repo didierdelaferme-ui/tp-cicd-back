@@ -8,6 +8,9 @@
 
 name: Java CI with Maven
 
+env:
+  imagename: didierdelaferme/tpImage: ${{github.ref_name}}
+
 on:
   push:
     branches: [ "*" ]
