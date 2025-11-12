@@ -9,7 +9,9 @@
 name: Java CI with Maven
 
 env:
-  imagename: didierdelaferme/tpImage: ${{github.ref_name}}
+  imagename: didierdelaferme/tpImage:${{ github.ref_name }}
+  docker_username: adrienbonnamour
+  docker_password: adriendocker
 
 on:
   push:
@@ -32,3 +34,17 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+
+    - name: Build Docker image
+      run: |
+        docker build -t ${{ env.imagename }} .
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ env.docker_username }}
+        password: ${{ env.docker_password }}
+
+    - name: Push Docker image
+      run: |
+        docker push ${{ env.imagename }}
