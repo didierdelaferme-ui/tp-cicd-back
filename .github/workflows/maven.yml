@@ -9,9 +9,7 @@
 name: Java CI with Maven
 
 env:
-  docker_username: adrienbonnamour
-  docker_password: adriendocker
-  imagename: adrienbonnamour/tpcicd:${{ github.ref_name }}
+  imagename: ${{ vars.DOCKER_USERNAME }}/tp_ci_cd:${{ github.ref_name }}
 
 on:
   push:
@@ -43,8 +41,8 @@ jobs:
     - name: Log in to Docker Hub
       uses: docker/login-action@v3
       with:
-        username: ${{ env.docker_username }}
-        password: ${{ env.docker_password }}
+        username: ${{ vars.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_TOKEN }}
 
     - name: Push Docker image
       run: docker push ${{ env.imagename }}
